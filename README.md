@@ -1,15 +1,15 @@
 ## Bouncy (Splashy Adaptation...title in progress...)
----
+
 ### Background
 This is a game where the player object is constantly bouncing up and down, and can move left and right based on user input. As the player is bouncing, platforms are moving towards the player at a gradually increasing speed. The player must hit these platforms to gain points. If the player misses the platform, it's game over.
 
 ---
 ### Functionality/MVP
- [] 3D visuals and user interface
- [] Player can move left and right based on mouse position
- [] Platforms are automatically generated for player to jump on
- [] Player scores points by colliding with platforms
- [] Player loses when missing a platform
+ - [ ] 3D visuals and user interface
+ - [ ] Player can move left and right based on mouse position
+ - [ ] Platforms are automatically generated for player to jump on
+ - [ ] Player scores points by colliding with platforms
+ - [ ] Player loses when missing a platform
  
 ---
 ### Wireframes
@@ -23,12 +23,12 @@ This is a game where the player object is constantly bouncing up and down, and c
  * Howler.js (or HTML audio player) for game background music.
  * Webpack to bundle various scripts into a single source.
  
- The main scripts will include: 
- `main.js`: Responsible for overall game scoring and logic.
- `board.js`: This will be responsible for scene generation and the render loop.
- `player.js`: This will be the player object model that will listen for mouse position and move accordingly.
- `platform.js`: This will handle the creation of a single platform.
- `platform_generator.js`: This will handle how platforms are auto generated.
+ The main scripts will include: <br>
+ `main.js`: Responsible for overall game scoring and logic.<br>
+ `board.js`: This will be responsible for scene generation and the render loop. <br>
+ `player.js`: This will be the player object model that will listen for mouse position and move accordingly. <br>
+ `platform.js`: This will handle the creation of a single platform. <br>
+ `platform_generator.js`: This will handle how platforms are auto generated. <br>
  
 ---
 ### Implementation Timeline
