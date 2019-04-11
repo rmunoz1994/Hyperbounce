@@ -23,6 +23,13 @@ This is a game where the player object is constantly bouncing up and down, and c
  * Howler.js (or HTML audio player) for game background music.
  * Webpack to bundle various scripts into a single source.
  
+ The main scripts will include: 
+ `main.js`: Responsible for overall game scoring and logic.
+ `board.js`: This will be responsible for scene generation and the render loop.
+ `player.js`: This will be the player object model that will listen for mouse position and move accordingly.
+ `platform.js`: This will handle the creation of a single platform.
+ `platform_generator.js`: This will handle how platforms are auto generated.
+ 
 ---
 ### Implementation Timeline
 #### Day 1:
@@ -44,9 +51,11 @@ This is a game where the player object is constantly bouncing up and down, and c
  * Implement game over
  * Implement site UI
 ### Bonus Features
+ * Saved High Score
  * Advanced Post Processing
  * Actual 3D modeled objects in place of primitive shapes for platforms and player
  * Score multiplier based on hitting specified point on a platform (Usually dead center)
  * Rare auto-generated obstacles (spikes?) on a platform
  * Special FX upon hitting a platform, score multiplier, or obstacle
  * Background map
+ * Swappable models/themes
