@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bouncy</title>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+    <h2 id="score"></h2> 
+    <script src="js/three.js"></script>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('white');
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var mouse = {x: 0, y: 0};
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.shadowMap.enabled = true;
+        // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        // renderer.physicallyCorrectLights = true;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var light = new THREE.PointLight(0xffffff, 2.5, 1000);
+        light.position.set(30, 100, 100);
+        // var light = new THREE.DirectionalLight(0xffffff, 1);
+        // light.position.set(0, 10, 5);
+        // const hemisphereLight = new THREE.HemisphereLight(0xB1E1FF, 0xB97A20, 2);
+        // light.castShadow = true;
+        scene.add(light);
+        // scene.add(hemisphereLight);
+
+
+        ///////PLAYER OBJECT/////////
+        const sphereGeo = new THREE.SphereGeometry(1, 32, 32);
+        // const sphereMat = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+        const sphereMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+        // sphere.castShadow = true;
+        scene.add(sphere);
+        sphere.translateY(-2.5);
+
+        camera.position.z = 5;
+
+        let up = true;
+
+        document.addEventListener('mousemove', onMouseMove, false);
+
+        function onMouseMove(event) {
+            event.preventDefault();
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            var vector = new THREE.Vector3(mouse.x, 0, 0);
+            vector.unproject( camera );
+            var dir = vector.sub( camera.position ).normalize();
+            var distance = -camera.position.z / dir.z;
+            var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+            sphere.position.x = pos.x;
+        }
+
+        const platformArr = []
+
+        function getRandomArbitrary(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function generateFirstPlatform() {
+            const platGeo = new THREE.CylinderGeometry(2, 2, 0.5, 32);
+            const platMat = new THREE.MeshStandardMaterial({ color: 0x0078D7 });
+            const platform = new THREE.Mesh(platGeo, platMat);
+            const platform2 = new THREE.Mesh(platGeo, platMat);
+            // platform.receiveShadow = true;
+            // platform2.receiveShadow = true;
+            scene.add(platform);
+            scene.add(platform2);
+            platform.translateY(-3.5);
+            platformArr.push(platform);
+            platform2.translateY(-3.5);
+            platform2.translateZ(-10);
+            platformArr.push(platform2);
+        }
+
+        function platformGenerator() {
+            const platGeo = new THREE.CylinderGeometry(2, 2, 0.5, 32);
+            // const platMat = new THREE.MeshBasicMaterial({ color: 0x0078D7 });
+            const platMat = new THREE.MeshStandardMaterial({ color: 0x0078D7 });
+            const platform = new THREE.Mesh(platGeo, platMat);
+            // platform.receiveShadow = true;
+            scene.add(platform);
+            platform.translateX(getRandomArbitrary(-5.5, 5.5));
+            platform.translateY(-3.5);
+            platform.translateZ(-20);
+            platformArr.push(platform);
+        }
+
+        function collided(playerPos, platform) {
+            const leftCollision = platform.position.x + 2
+            const rightCollision = platform.position.x - 2
+            if (playerPos <= leftCollision && playerPos >= rightCollision) {
+                return true;
+            }
+            return false;
+        }
+
+        generateFirstPlatform();
+        platformGenerator();
+
+
+
+        let gameOver = false;
+        let speed = 0.25;
+        let points = 0;
+
+  
+        
+
+        function animate() {
+            let id = requestAnimationFrame(animate);
+            for (let i = 0; i < platformArr.length; i++) {
+                const element = platformArr[i];
+                element.position.z += speed;
+            }
+            // plane.position.z -= 0.2;
+            var vec = new THREE.Vector3(sphere.position.x, sphere.position.y, sphere.position.z);
+            // console.log(vec);
+            if (up) {
+                sphere.position.y += speed;
+            } else {
+                sphere.position.y -= speed;
+            }
+            if (sphere.position.y >= 2.5) {
+                up = false;
+            } else if (sphere.position.y <= -2.5) {
+                up = true;
+            }
+            if (platformArr[platformArr.length - 1].position.z >= -10) {
+                platformGenerator();
+            }
+            if (platformArr.length >=1 && platformArr[0].position.z > 2) {
+                // console.log(platformArr);
+                let removedPlat = platformArr.shift();
+                removedPlat.geometry.dispose();
+                removedPlat.material.dispose();
+                scene.remove(removedPlat);
+                // platformGenerator();
+            }
+            if (sphere.position.y <= -2.5 && !collided(sphere.position.x, platformArr[0])) {
+                console.log(platformArr[0]);
+                cancelAnimationFrame(id);
+                console.log("GAME OVER");
+                console.log(`POINTS: ${points}`);
+            } else if (sphere.position.y <= -2.5) {
+                points += 1;
+                document.getElementById("score").innerHTML = "Score:" + points;
+                // if (points === 20 || points === 40 || points === 60) {
+                    // speed += .05;
+                // }
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // while (!gameOver) {
+        // }
+    </script>
+</body>
+</html>
