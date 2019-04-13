@@ -12,17 +12,19 @@
 </head>
 <body>
     <h2 id="score"></h2> 
+    
     <script src="js/three.js"></script>
-
     <script>
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x494949);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 2, 10);
         camera.rotation.x = -0.349066;
-        console.log(camera.position);
         // camera.lookAt(new THREE.Vector3(0, 0, 0));
-        var mouse = {x: 0, y: 0};
+        let mouse = {x: 0, y: 0};
+        let prevMouse = {x: 0};
+        let prevPos = 0;
+        
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.shadowMap.enabled = true;
@@ -58,14 +60,30 @@
 
         function onMouseMove(event) {
             event.preventDefault();
+
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            var vector = new THREE.Vector3(mouse.x, 0, 0);
+            // console.log(mouse.x);
+            var vector = new THREE.Vector3((mouse.x ), 0, 0);
             vector.unproject( camera );
-            var dir = vector.sub( camera.position ).normalize();
+            var dir = vector.sub( camera.position  ).normalize();
             var distance = -camera.position.z / dir.z;
             var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-            sphere.position.x = pos.x;
-            // camera.position.x = pos.x; ADD CAMERA LAG
+
+            // console.log(mouse.x - prevMouse.x);
+            sphere.position.x = (pos.x) - (camera.position.x / 2);
+            prevPos = pos.x;
+            prevMouse.x = mouse.x;
+            // currPos.x = pos.x
+
+            // let vec = new THREE.Vector3(pos.x, sphere.position.y, 0);
+            // sphere.position.lerp(vec, 0.1);
+            
+        }
+
+        function cameraLag(spherePos) {
+            const vec = new THREE.Vector3(spherePos, 2, 10);
+            prevPos = camera.position;
+            camera.position.lerp(vec, 0.05);
         }
 
         // function onMouseMove(event) {
@@ -74,11 +92,11 @@
         //     raycaster = new THREE.Raycaster();
         //     raycaster.setFromCamera(mouse, camera);
         //     vector = raycaster.ray.direction;
-        //     vector.unproject(camera);
-        //     var dir = vector.sub(camera.position).normalize();
-        //     var distance = -camera.position.z / dir.z;
-        //     var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-        //     sphere.position.x = pos.x;
+            // vector.unproject(camera);
+            // var dir = vector.sub(camera.position).normalize();
+            // var distance = -camera.position.z / dir.z;
+            // var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+        //     sphere.position.x = vector.x;
         // }
 
         const platformArr = []
@@ -142,24 +160,10 @@
         let gameOver = false;
         let speed = 0.35;
         let points = 0;
-
-        let goal = new THREE.Object3D;
-        sphere.add(goal);
-        scene.add(goal);
-        goal.position.set(0, 2, 10);
-        function cameraLag(spherePos) {
-            // if (camera.position.x != spherePos) {
-            //     camera.position.x += (spherePos - camera.position.x);
-            // }
-            // let temp = new THREE.Vector3;
-            // temp.setFromMatrixPosition(goal.matrixWorld);
-            // camera.position.lerp(temp, 0.2);
-            // camera.lookAt();
-            const vec = new THREE.Vector3(spherePos, 2, 10);
-            camera.position.lerp(vec, 0.05);
-        }
+        
 
         function animate() {
+
             cameraLag(sphere.position.x);
             let id = requestAnimationFrame(animate);
             for (let i = 0; i < platformArr.length; i++) {
@@ -201,6 +205,7 @@
             }
             renderer.render(scene, camera);
         }
+
         animate();
         // renderer.render(scene, camera);
         
