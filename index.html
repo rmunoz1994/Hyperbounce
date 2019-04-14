@@ -32,6 +32,10 @@
         // renderer.physicallyCorrectLights = true;
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
+        this.canvas = renderer.domElement;
+        debugger
+        this.canvas.requestPointerLock = this.canvas.requestPointerLock || this.canvas.mozRequestPointerLock;
+        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
         var light = new THREE.PointLight(0xffffff, 2.5, 1000);
         light.position.set(30, 100, 100);
@@ -58,26 +62,32 @@
 
         document.addEventListener('mousemove', onMouseMove, false);
 
+        // function onMouseMove(event) {
+        //     event.preventDefault();
+
+        //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+           
+        //     var vector = new THREE.Vector3((mouse.x ), 0, 0);
+        //     vector.unproject( camera );
+        //     var dir = vector.sub( camera.position  ).normalize();
+        //     var distance = -camera.position.z / dir.z;
+        //     var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+
+        //     sphere.position.x = (pos.x) - (camera.position.x / 2);
+        //     prevPos = pos.x;
+        //     prevMouse.x = mouse.x;
+            
+        // }
+
         function onMouseMove(event) {
             event.preventDefault();
+            sphere.position.x += event.movementX * 0.03;
+        }
 
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            // console.log(mouse.x);
-            var vector = new THREE.Vector3((mouse.x ), 0, 0);
-            vector.unproject( camera );
-            var dir = vector.sub( camera.position  ).normalize();
-            var distance = -camera.position.z / dir.z;
-            var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+        document.addEventListener('click', onClick);
 
-            // console.log(mouse.x - prevMouse.x);
-            sphere.position.x = (pos.x) - (camera.position.x / 2);
-            prevPos = pos.x;
-            prevMouse.x = mouse.x;
-            // currPos.x = pos.x
-
-            // let vec = new THREE.Vector3(pos.x, sphere.position.y, 0);
-            // sphere.position.lerp(vec, 0.1);
-            
+        function onClick(event) {
+            canvas.requestPointerLock();
         }
 
         function cameraLag(spherePos) {
@@ -85,19 +95,6 @@
             prevPos = camera.position;
             camera.position.lerp(vec, 0.05);
         }
-
-        // function onMouseMove(event) {
-        //     event.preventDefault();
-        //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        //     raycaster = new THREE.Raycaster();
-        //     raycaster.setFromCamera(mouse, camera);
-        //     vector = raycaster.ray.direction;
-            // vector.unproject(camera);
-            // var dir = vector.sub(camera.position).normalize();
-            // var distance = -camera.position.z / dir.z;
-            // var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-        //     sphere.position.x = vector.x;
-        // }
 
         const platformArr = []
 
@@ -110,36 +107,27 @@
             const platMat = new THREE.MeshStandardMaterial({ color: 0x890000 });
             const platform = new THREE.Mesh(platGeo, platMat);
             const platform2 = new THREE.Mesh(platGeo, platMat);
-            // platform.receiveShadow = true;
-            // platform2.receiveShadow = true;
-            // scene.add(platform);
-            // scene.add(platform2);
             platform.translateY(-3.5);
             scene.add(platform);
             scene.add(platform2);
             platformArr.push(platform);
             platform2.position.set(0, -3.5, -10);
-            // platform2.translateY(-3.5);
-            // platform2.translateZ(-10);
             platformArr.push(platform2);
         }
 
         function platformGenerator() {
             const platGeo = new THREE.CylinderGeometry(2, 2, 0.5, 32);
-            // const platMat = new THREE.MeshBasicMaterial({ color: 0x0078D7 });
             const platMat = new THREE.MeshStandardMaterial({ color: 0x890000 });
             const platform = new THREE.Mesh(platGeo, platMat);
-            // platform.receiveShadow = true;
             scene.add(platform);
-            //////////THIS POTENTIALLY CREATES A PIVOT POINT//////////
+            // ////////THIS POTENTIALLY CREATES A PIVOT POINT//////////
             // const group = new THREE.Group();
             // group.position = new THREE.Vector3(1, -3.5, 0);
             // group.add(platform);
-            //////////////////////////////////////////////////////////
+            // ////////////////////////////////////////////////////////
             platform.translateX(getRandomArbitrary(-5.5, 5.5));
             platform.translateY(-3.5);
             platform.translateZ(-20);
-            // platform.scale.set(2,1,2);
             platformArr.push(platform);
         }
 
@@ -161,18 +149,15 @@
         let speed = 0.35;
         let points = 0;
         
-
+        // this.canvas.requestPointerLock();
         function animate() {
-
             cameraLag(sphere.position.x);
             let id = requestAnimationFrame(animate);
             for (let i = 0; i < platformArr.length; i++) {
                 const element = platformArr[i];
                 element.position.z += speed;
             }
-            // plane.position.z -= 0.2;
             var vec = new THREE.Vector3(sphere.position.x, sphere.position.y, sphere.position.z);
-            // console.log(vec);
             if (up) {
                 sphere.position.y += speed;
             } else {
@@ -190,11 +175,12 @@
                 scene.remove(removedPlat);
             }
             //////TEMPORARY SOLUTION OF CHECKING FOR COLLISION WITH FIRST AND SECOND PLATFORM IN ARR///////////
-            // if (sphere.position.y <= -2.5 && !collided(sphere.position.x, platformArr[0]) && !collided(sphere.position.x, platformArr[1])) {
-            //     cancelAnimationFrame(id);
-            //     console.log("GAME OVER");
-            //     console.log(`POINTS: ${points}`);
-            // } else 
+            if (sphere.position.y <= -2.5 && !collided(sphere.position.x, platformArr[0]) && !collided(sphere.position.x, platformArr[1])) {
+                cancelAnimationFrame(id);
+                console.log("GAME OVER");
+                console.log(`POINTS: ${points}`);
+                document.exitPointerLock();
+            } else 
             if (sphere.position.y <= -2.5) {
                 points += 1;
                 platformGenerator();
@@ -208,13 +194,6 @@
 
         animate();
         // renderer.render(scene, camera);
-        
-        // while (!gameOver) {
-        // }
-
-        //////EXPORT FOR THREE JS INSPECTOR IN CHROME///////
-        // window.scene = scene;
-        // window.THREE = THREE;
     </script>
 </body>
 </html>
