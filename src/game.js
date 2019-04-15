@@ -1,5 +1,5 @@
-import Player from './player';
-import PlatformGenerator from './platform_generator';
+import Player from './player.js';
+import PlatformGenerator from './platform_generator.js';
 
 export default class Game {
 
