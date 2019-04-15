@@ -9,6 +9,7 @@ export default class Player {
         
         this.speed = 0.35;
         this.up = true;
+        this.moving = false;
 
         this.onMouseMove = this.onMouseMove.bind(this);
         this.move = this.move.bind(this);
@@ -20,10 +21,13 @@ export default class Player {
 
     onMouseMove(event) {
         event.preventDefault();
-        this.sphere.position.x += event.movementX * 0.03;
+        if (this.moving) {
+            this.sphere.position.x += event.movementX * 0.03;
+        }
     }
 
     move() {
+        this.moving = true;
         requestAnimationFrame(this.move);
         if (this.up) {
             this.sphere.position.y += this.speed;
