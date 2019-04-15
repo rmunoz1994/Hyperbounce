@@ -6,7 +6,7 @@ export default class PlatformGenerator {
         this.platformArr = [];
         this.update = this.update.bind(this);
         this.getRandomArbitrary = this.getRandomArbitrary.bind(this);
-        this.speed = 0.35;
+        this.speed = 0.3;
         
         // this.update();
     }
@@ -40,6 +40,7 @@ export default class PlatformGenerator {
         if (this.platformArr.length >= 1 && this.platformArr[0].platform.position.z > 10) {
             let removedPlat = this.platformArr.shift();
             removedPlat.removePlatform();
+            removedPlat = undefined;
         }
     }
 

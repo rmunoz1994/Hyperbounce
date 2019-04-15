@@ -1,13 +1,13 @@
 export default class Player {
 
     constructor() {
-        const sphereGeo = new THREE.SphereGeometry(1, 32, 32);
+        const sphereGeo = new THREE.SphereBufferGeometry(1, 32, 32);
         const sphereMat = new THREE.MeshStandardMaterial({ color: 0x272727 });
         this.sphere = new THREE.Mesh(sphereGeo, sphereMat);
         game.scene.add(this.sphere);
         this.sphere.translateY(-2.5);
         
-        this.speed = 0.35;
+        this.speed = 0.3;
         this.up = true;
         this.moving = false;
 

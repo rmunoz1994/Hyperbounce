@@ -70,9 +70,9 @@ export default class Game {
     }
 
     collided(playerPos, platform) {
-        const leftCollision = platform.position.x + 2
-        const rightCollision = platform.position.x - 2
-        if (playerPos <= leftCollision && playerPos >= rightCollision) {
+        const rightCollision = platform.position.x + 2
+        const leftCollision = platform.position.x - 2
+        if (playerPos >= leftCollision && playerPos <= rightCollision) {
             return true;
         }
         return false;
@@ -93,6 +93,8 @@ export default class Game {
         } else if (this.player.sphere.position.y <= -2.5) {
             this.score += 1;
             this.platformGenerator.generatePlatform();
+            this.platformGenerator.speed += 0.001;
+            this.player.speed += 0.001;
             document.getElementById("score").innerHTML = "Score: " + this.score;
             if (this.score === 10 || this.score === 20 || this.score === 30 || this.score === 40) {
                 this.speed += 0.025;

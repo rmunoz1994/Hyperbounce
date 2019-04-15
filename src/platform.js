@@ -3,7 +3,7 @@ import Game from "./game.js";
 export default class Platform {
 
     constructor() {
-        const platGeo = new THREE.CylinderGeometry(2, 2, 0.5, 32);
+        const platGeo = new THREE.CylinderBufferGeometry(2, 2, 0.5, 32);
         const platMat = new THREE.MeshStandardMaterial({ color: 0x890000 });
         this.platform = new THREE.Mesh(platGeo, platMat);
         this.platform.position.y = -3.5;
@@ -13,9 +13,10 @@ export default class Platform {
     }
 
     removePlatform() {
+        game.scene.remove(this.platform);
         this.platform.geometry.dispose();
         this.platform.material.dispose();
-        game.scene.remove(this.platform);
+        this.platform = undefined;
     }
 
 }
