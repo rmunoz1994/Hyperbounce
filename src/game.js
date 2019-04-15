@@ -44,7 +44,21 @@ export default class Game {
         this.canvas = this.renderer.domElement;
         this.canvas.requestPointerLock = this.canvas.requestPointerLock || this.canvas.mozRequestPointerLock || this.canvas.webkitRequestPointerLock;
         document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.camera);
+
+
+        this.composer = new THREE.EffectComposer(this.renderer);
+        const renderPass = new THREE.RenderPass(this.scene, this.camera);
+        this.composer.addPass(renderPass);
+        
+        const pass1 = new THREE.ShaderPass(THREE.SepiaShader);
+        this.composer.addPass(pass1);
+        pass1.renderToScreen = true;
+        this.composer.render();
+        
+
+
+
 
         this.startButton = document.getElementById("start-btn");
         this.startButton.addEventListener('click', this.start);
@@ -96,11 +110,9 @@ export default class Game {
             this.platformGenerator.speed += 0.001;
             this.player.speed += 0.001;
             document.getElementById("score").innerHTML = "Score: " + this.score;
-            if (this.score === 10 || this.score === 20 || this.score === 30 || this.score === 40) {
-                this.speed += 0.025;
-            }
         }
 
-        this.renderer.render(this.scene, this.camera);
+        // this.renderer.render(this.scene, this.cam
+        this.composer.render();
     }
 }
