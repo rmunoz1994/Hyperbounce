@@ -8,7 +8,7 @@ export default class PlatformGenerator {
         this.getRandomArbitrary = this.getRandomArbitrary.bind(this);
         this.speed = 0.35;
         
-        this.update();
+        // this.update();
     }
 
     getRandomArbitrary(min, max) {
@@ -39,9 +39,7 @@ export default class PlatformGenerator {
 
         if (this.platformArr.length >= 1 && this.platformArr[0].platform.position.z > 10) {
             let removedPlat = this.platformArr.shift();
-            removedPlat.platform.geometry.dispose();
-            removedPlat.platform.material.dispose();
-            game.scene.remove(removedPlat);
+            removedPlat.removePlatform();
         }
     }
 

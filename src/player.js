@@ -15,7 +15,7 @@ export default class Player {
 
         document.addEventListener('mousemove', this.onMouseMove, false);
 
-        this.move();
+        // this.move();
     }
 
     onMouseMove(event) {

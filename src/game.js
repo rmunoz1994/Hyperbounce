@@ -31,6 +31,7 @@ export default class Game {
         this.collided = this.collided.bind(this);
         this.animate = this.animate.bind(this);
         this.onClick = this.onClick.bind(this);
+        this.start = this.start.bind(this);
 
         let mouse = { x: 0, y: 0 };
         let prevMouse = { x: 0 };
@@ -41,9 +42,22 @@ export default class Game {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
         this.canvas = this.renderer.domElement;
-        this.canvas.requestPointerLock = this.canvas.requestPointerLock || this.canvas.mozRequestPointerLock;
-        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+        this.canvas.requestPointerLock = this.canvas.requestPointerLock || this.canvas.mozRequestPointerLock || this.canvas.webkitRequestPointerLock;
+        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
+        this.renderer.render(this.scene, this.camera);
+
+        this.startButton = document.getElementById("start-btn");
+        this.startButton.addEventListener('click', this.start);
+        // this.animate();
+    }
+
+    start() {
+        this.startButton.disabled = true;
+        this.startButton.classList.add("hidden");
+        this.canvas.requestPointerLock();
         this.animate();
+        this.player.move();
+        this.platformGenerator.update();
     }
 
     cameraLag(spherePos) {
@@ -79,7 +93,7 @@ export default class Game {
         } else if (this.player.sphere.position.y <= -2.5) {
             this.score += 1;
             this.platformGenerator.generatePlatform();
-            document.getElementById("score").innerHTML = "Score:" + this.score;
+            document.getElementById("score").innerHTML = "Score: " + this.score;
             if (this.score === 10 || this.score === 20 || this.score === 30 || this.score === 40) {
                 this.speed += 0.025;
             }
