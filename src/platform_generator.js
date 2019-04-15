@@ -36,7 +36,7 @@ export default class PlatformGenerator {
             const element = this.platformArr[i].platform;
             element.position.z += this.speed;
         }
-        // this.player.move();
+
         if (this.platformArr.length >= 1 && this.platformArr[0].platform.position.z > 10) {
             let removedPlat = this.platformArr.shift();
             removedPlat.platform.geometry.dispose();
