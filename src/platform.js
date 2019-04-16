@@ -15,7 +15,7 @@ export default class Platform {
         this.hit = new THREE.Mesh(hitGeo, hitMat);
         this.hit.position.y = -3.5;
         this.hit.rotation.x = Math.PI / 2;
-        this.hit.visible = true;
+        this.hit.visible = false;
 
         // console.log(this.hit.scale);
         this.xScale = this.hit.scale.x;
@@ -30,6 +30,7 @@ export default class Platform {
 
         this.removePlatform = this.removePlatform.bind(this);
         this.collision = this.collision.bind(this);
+        this.update = this.update.bind(this);
     }
 
     removePlatform() {
@@ -43,15 +44,20 @@ export default class Platform {
     }
 
     collision() {
-        const vec = new THREE.Vector3(this.xScale, this.yScale, this.zScale);
+        this.hit.visible = true;
+        this.update();
+    }
+
+    update() {
         // this.camera.position.lerp(vec, 0.05);
-        let id = requestAnimationFrame(this.collision);
+        let id = requestAnimationFrame(this.update);
         // this.hit.visible = true;
-        this.xScale += 0.2;
-        this.yScale += 0.2;
-        this.zScale += 0.2;
-        if (this.xScale >= 4) {
-            cancelAnimationFrame(this.collision);
+        this.xScale += 0.25;
+        this.yScale += 0.25;
+        this.zScale += 0.25;
+        const vec = new THREE.Vector3(this.xScale, this.yScale, this.zScale);
+        if (this.xScale >= 5) {
+            cancelAnimationFrame(this.update);
             this.hit.visible = false;
             this.hit.geometry.dispose();
             this.hit.material.dispose();

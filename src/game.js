@@ -52,9 +52,9 @@ export default class Game {
         const renderPass = new THREE.RenderPass(this.scene, this.camera);
         this.composer.addPass(renderPass);
 
-        // const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-        // effectFXAA.uniforms.resolution.value.set(1 / window.innerWidth, 1 / window.innerHeight);
-        // this.composer.addPass(effectFXAA);
+        const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+        effectFXAA.uniforms.resolution.value.set(1 / window.innerWidth, 1 / window.innerHeight);
+        this.composer.addPass(effectFXAA);
 
 
         const bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
