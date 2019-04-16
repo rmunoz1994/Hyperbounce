@@ -12,11 +12,13 @@ export default class Game {
         this.clock = new THREE.Clock();
         this.running = true;
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x494949);
+        // this.scene.background = new THREE.Color(0x494949);
+        // this.scene.background = new THREE.Color(0x000000);
 
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.camera.position.set(0, 2, 10);
         this.camera.rotation.x = -0.349066;
+        this.camera.layers.enable(1);
 
         let light = new THREE.PointLight(0xffffff, 2.5, 1000);
         light.position.set(30, 100, 100);
@@ -30,15 +32,14 @@ export default class Game {
         this.cameraLag = this.cameraLag.bind(this);
         this.collided = this.collided.bind(this);
         this.animate = this.animate.bind(this);
-        this.onClick = this.onClick.bind(this);
+        // this.onClick = this.onClick.bind(this);
         this.start = this.start.bind(this);
 
-        let mouse = { x: 0, y: 0 };
-        let prevMouse = { x: 0 };
-        let prevPos = 0;
         document.addEventListener('click', this.onClick);
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.autoClear = false;
+        this.renderer.setClearColor(0x000000);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
         this.canvas = this.renderer.domElement;
@@ -50,15 +51,31 @@ export default class Game {
         this.composer = new THREE.EffectComposer(this.renderer);
         const renderPass = new THREE.RenderPass(this.scene, this.camera);
         this.composer.addPass(renderPass);
-        
-        const pass1 = new THREE.ShaderPass(THREE.SepiaShader);
-        this.composer.addPass(pass1);
-        pass1.renderToScreen = true;
+
+        // const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+        // effectFXAA.uniforms.resolution.value.set(1 / window.innerWidth, 1 / window.innerHeight);
+        // this.composer.addPass(effectFXAA);
+
+
+        const bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.15;
+        bloomPass.strength = 1;
+        bloomPass.radius = 0.1;
+        bloomPass.renderToScreen = true;
+        this.composer.addPass(bloomPass);
+
+        this.renderer.gammaInput = true;
+        this.renderer.gammaOutput = true;
+        this.renderer.toneMappingExposure = Math.pow(0.9, 4.0); 
+
+        // this.renderer.clear();
+        // this.camera.layers.set(1);
         this.composer.render();
+        // this.renderer.clearDepth();
+        // this.camera.layers.set(0);
+        // this.renderer.render(this.scene, this.camera);
         
-
-
-
+        // this.renderer.render(this.scene, this.camera);
 
         this.startButton = document.getElementById("start-btn");
         this.startButton.addEventListener('click', this.start);
@@ -79,13 +96,13 @@ export default class Game {
         this.camera.position.lerp(vec, 0.05);
     }   
 
-    onClick(event) {
-        this.canvas.requestPointerLock();
-    }
+    // onClick(event) {
+    //     this.canvas.requestPointerLock();
+    // }
 
     collided(playerPos, platform) {
-        const rightCollision = platform.position.x + 2
-        const leftCollision = platform.position.x - 2
+        const rightCollision = platform.position.x + 2;
+        const leftCollision = platform.position.x - 2;
         if (playerPos >= leftCollision && playerPos <= rightCollision) {
             return true;
         }
@@ -106,13 +123,22 @@ export default class Game {
                 document.exitPointerLock();
         } else if (this.player.sphere.position.y <= -2.5) {
             this.score += 1;
-            this.platformGenerator.generatePlatform();
+            if (this.score > 1) { 
+                this.platformGenerator.generatePlatform();
+            }
             this.platformGenerator.speed += 0.001;
             this.player.speed += 0.001;
             document.getElementById("score").innerHTML = "Score: " + this.score;
         }
 
         // this.renderer.render(this.scene, this.cam
+        // this.renderer.clear();
+        // this.camera.layers.set(1);
         this.composer.render();
+        // this.renderer.clearDepth();
+        // this.camera.layers.set(0);
+        // this.renderer.render(this.scene, this.camera);
+
+        // this.renderer.render(this.scene, this.camera);
     }
 }

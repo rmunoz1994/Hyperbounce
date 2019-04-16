@@ -2,8 +2,9 @@ export default class Player {
 
     constructor() {
         const sphereGeo = new THREE.SphereBufferGeometry(1, 32, 32);
-        const sphereMat = new THREE.MeshStandardMaterial({ color: 0x272727 });
+        const sphereMat = new THREE.MeshStandardMaterial({ color: 0x050505 });
         this.sphere = new THREE.Mesh(sphereGeo, sphereMat);
+        this.sphere.layers.set(0);
         game.scene.add(this.sphere);
         this.sphere.translateY(-2.5);
         

@@ -28,6 +28,7 @@ export default class PlatformGenerator {
         platform.platform.translateX(this.getRandomArbitrary(-5.5, 5.5));
         platform.platform.translateZ(-20);
         this.platformArr.push(platform);
+        platform.collision();
     }
 
     update() {
