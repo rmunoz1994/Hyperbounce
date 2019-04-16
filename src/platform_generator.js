@@ -19,26 +19,26 @@ export default class PlatformGenerator {
         const platform = new Platform();
         const platform2 = new Platform();
         this.platformArr.push(platform);
-        platform2.platform.position.set(0, -3.5, -10);
+        platform2.platformGroup.position.z = -10;
         this.platformArr.push(platform2);
     }
 
     generatePlatform() {
         const platform = new Platform();
-        platform.platform.translateX(this.getRandomArbitrary(-5.5, 5.5));
-        platform.platform.translateZ(-20);
+        platform.platformGroup.translateX(this.getRandomArbitrary(-5.5, 5.5));
+        // console.log(platform.platformGroup.position.x);
+        platform.platformGroup.translateZ(-20);
         this.platformArr.push(platform);
-        platform.collision();
     }
 
     update() {
         requestAnimationFrame(this.update);
         for (let i = 0; i < this.platformArr.length; i++) {
-            const element = this.platformArr[i].platform;
+            const element = this.platformArr[i].platformGroup;
             element.position.z += this.speed;
         }
 
-        if (this.platformArr.length >= 1 && this.platformArr[0].platform.position.z > 10) {
+        if (this.platformArr.length >= 1 && this.platformArr[0].platformGroup.position.z > 10) {
             let removedPlat = this.platformArr.shift();
             removedPlat.removePlatform();
             removedPlat = undefined;

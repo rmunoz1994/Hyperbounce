@@ -103,6 +103,10 @@ export default class Game {
     collided(playerPos, platform) {
         const rightCollision = platform.position.x + 2;
         const leftCollision = platform.position.x - 2;
+        // console.log("-------------------");
+        // console.log(platform.position.x);
+        // console.log(leftCollision);
+        // console.log(rightCollision);
         if (playerPos >= leftCollision && playerPos <= rightCollision) {
             return true;
         }
@@ -115,8 +119,8 @@ export default class Game {
 
         //////TEMPORARY SOLUTION OF CHECKING FOR COLLISION WITH FIRST AND SECOND PLATFORM IN ARR///////////
         if (this.player.sphere.position.y <= -2.5 && 
-            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platform) && 
-            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[1].platform)) {
+            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platformGroup) && 
+            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[1].platformGroup)) {
                 cancelAnimationFrame(id);
                 console.log("GAME OVER");
                 console.log(`POINTS: ${this.score}`);
@@ -126,6 +130,7 @@ export default class Game {
             if (this.score > 1) { 
                 this.platformGenerator.generatePlatform();
             }
+            this.platformGenerator.platformArr[0].collision();
             this.platformGenerator.speed += 0.001;
             this.player.speed += 0.001;
             document.getElementById("score").innerHTML = "Score: " + this.score;

@@ -8,7 +8,7 @@ export default class Platform {
         this.platform = new THREE.Mesh(platGeo, platMat);
         this.platform.layers.enable(1);
         this.platform.position.y = -3.5;
-        game.scene.add(this.platform);
+        // game.scene.add(this.platform);
 
         const hitGeo = new THREE.PlaneBufferGeometry(3,3,1);
         const hitMat = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
@@ -16,12 +16,17 @@ export default class Platform {
         this.hit.position.y = -3.5;
         this.hit.rotation.x = Math.PI / 2;
         this.hit.visible = true;
-        console.log(this.hit.scale);
+
+        // console.log(this.hit.scale);
         this.xScale = this.hit.scale.x;
         this.yScale = this.hit.scale.y;
         this.zScale = this.hit.scale.z; 
         
-        game.scene.add(this.hit);
+        // game.scene.add(this.hit);
+        this.platformGroup = new THREE.Group();
+        this.platformGroup.add(this.platform);
+        this.platformGroup.add(this.hit);
+        game.scene.add(this.platformGroup);
 
         this.removePlatform = this.removePlatform.bind(this);
         this.collision = this.collision.bind(this);
@@ -32,19 +37,25 @@ export default class Platform {
         this.platform.geometry.dispose();
         this.platform.material.dispose();
         this.platform = undefined;
+        // this.hit.geometry.dispose();
+        // this.hit.material.dispose();
+        // this.hit = undefined;
     }
 
     collision() {
         const vec = new THREE.Vector3(this.xScale, this.yScale, this.zScale);
         // this.camera.position.lerp(vec, 0.05);
         let id = requestAnimationFrame(this.collision);
-        this.hit.visible = true;
-        this.xScale += 0.05;
-        this.yScale += 0.05;
-        this.zScale += 0.05;
-        // this.hit.scale.x = this.xScale;
-        // this.hit.scale.y = this.yScale;
-        // this.hit.scale.z =  this.zScale;
+        // this.hit.visible = true;
+        this.xScale += 0.2;
+        this.yScale += 0.2;
+        this.zScale += 0.2;
+        if (this.xScale >= 4) {
+            cancelAnimationFrame(this.collision);
+            this.hit.visible = false;
+            this.hit.geometry.dispose();
+            this.hit.material.dispose();
+        }
         this.hit.scale.lerp(vec, 1);
     }
 
