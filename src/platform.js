@@ -53,11 +53,15 @@ export default class Platform {
         // this.camera.position.lerp(vec, 0.05);
         let id = requestAnimationFrame(this.update);
         // this.hit.visible = true;
-        this.xScale += 0.2;
-        this.yScale += 0.2;
-        this.zScale += 0.2;
+        this.xScale += 0.15;
+        this.yScale += 0.15;
+        this.zScale += 0.15;
         const vec = new THREE.Vector3(this.xScale, this.yScale, this.zScale);
-        if (this.xScale >= 5) {
+        if (this.xScale >= 3) {
+            //lower opacity
+            this.hit.material.opacity -= 0.15;
+        }
+        if (this.xScale >= 4) {
             cancelAnimationFrame(this.update);
             this.hit.visible = false;
             this.hit.geometry.dispose();

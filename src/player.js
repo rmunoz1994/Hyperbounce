@@ -5,7 +5,7 @@ export default class Player {
         const sphereMat = new THREE.MeshStandardMaterial({ color: 0x050505 });
         this.sphere = new THREE.Mesh(sphereGeo, sphereMat);
         this.sphere.layers.set(0);
-        game.scene.add(this.sphere);
+        game.scene2.add(this.sphere);
         this.sphere.translateY(-2.5);
         
         this.speed = 0.3;

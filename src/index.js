@@ -13,3 +13,5 @@ import Game from './game.js';
 
 new Game();
 
+
+// open /Applications/Google\ Chrome.app --args --allow-file-access-from-files
