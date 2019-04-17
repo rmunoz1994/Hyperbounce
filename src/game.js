@@ -43,7 +43,7 @@ export default class Game {
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
         this.renderer.autoClear = false;
-        // this.renderer.setClearColor(0x242424);
+        this.renderer.setClearColor(0x242424);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
         this.canvas = this.renderer.domElement;
@@ -71,7 +71,7 @@ export default class Game {
 
 
         const bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        bloomPass.threshold = 0.15;
+        bloomPass.threshold = 0.3;
         bloomPass.strength = 3;
         bloomPass.radius = 0.1;
         bloomPass.renderToScreen = true;

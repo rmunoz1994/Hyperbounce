@@ -46,6 +46,8 @@ export default class Platform {
 
     collision() {
         this.hit.visible = true;
+        this.platform.material.emissive = new THREE.Color(0xff0000);
+        // this.platform.material.emissiveIntensity = 0.75;
         this.update();
     }
 
