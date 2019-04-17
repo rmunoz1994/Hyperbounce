@@ -10,8 +10,9 @@ export default class Platform {
         this.platform.position.y = -3.5;
         // game.scene.add(this.platform);
 
+        const hitTexture = new THREE.TextureLoader().load("src/images/circleGradient.png");
         const hitGeo = new THREE.PlaneBufferGeometry(3,3,1);
-        const hitMat = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
+        const hitMat = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide, map: hitTexture, transparent: true});
         this.hit = new THREE.Mesh(hitGeo, hitMat);
         this.hit.position.y = -3.5;
         this.hit.rotation.x = Math.PI / 2;
