@@ -121,7 +121,7 @@ export default class Game {
         return false;
     }
 
-    /////BUG BECAUSE POSITION OF SCOREMULT IS NOT CHANGED WHEN POSITION OF PLATFORM GROUP IS////
+    
     incrementMultiplier(playerPos, platform) {
         let multPos = platform.scoreMult.position.x + platform.platformGroup.position.x;
         console.log(multPos);

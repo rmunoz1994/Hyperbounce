@@ -13,10 +13,10 @@ export default class Platform {
 
 
         ////CIRCLE THAT RAISES YOUR SCORE MULTIPLIER////
-        this.scoreMultExists = Math.random() >= 0.5;
+        this.scoreMultExists = Math.random() >= 0.75;
         if (this.scoreMultExists) {
             const scoreMultGeo = new THREE.CircleBufferGeometry(0.5, 32);
-            const scoreMultMat = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+            const scoreMultMat = new THREE.MeshBasicMaterial({ color: 0x404040, side: THREE.DoubleSide });
             this.scoreMult = new THREE.Mesh(scoreMultGeo, scoreMultMat);
             this.scoreMult.position.y = -3.249;
             this.scoreMult.rotation.x = Math.PI / 2;
