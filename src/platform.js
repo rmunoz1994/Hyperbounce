@@ -13,12 +13,15 @@ export default class Platform {
 
 
         ////CIRCLE THAT RAISES YOUR SCORE MULTIPLIER////
-        const scoreMultGeo = new THREE.CircleBufferGeometry(0.5, 32);
-        const scoreMultMat = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
-        this.scoreMult = new THREE.Mesh(scoreMultGeo, scoreMultMat);
-        this.scoreMult.position.y = -3.249;
-        this.scoreMult.rotation.x = Math.PI / 2;
-        this.scoreMult.position.x = this.getRandomArbitrary(-1.5, 1.5);
+        this.scoreMultExists = Math.random() >= 0.5;
+        if (this.scoreMultExists) {
+            const scoreMultGeo = new THREE.CircleBufferGeometry(0.5, 32);
+            const scoreMultMat = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+            this.scoreMult = new THREE.Mesh(scoreMultGeo, scoreMultMat);
+            this.scoreMult.position.y = -3.249;
+            this.scoreMult.rotation.x = Math.PI / 2;
+            this.scoreMult.position.x = this.getRandomArbitrary(-1.25, 1.25);
+        }
 
         ////SHOCKWAVE EFFECT////
         const hitTexture = new THREE.TextureLoader().load("src/images/circleGradient.png");
@@ -37,7 +40,7 @@ export default class Platform {
         // game.scene.add(this.hit);
         this.platformGroup = new THREE.Group();
         this.platformGroup.add(this.platform);
-        this.platformGroup.add(this.scoreMult);
+        if (this.scoreMultExists) this.platformGroup.add(this.scoreMult);
         this.platformGroup.add(this.hit);
         game.scene.add(this.platformGroup);
 

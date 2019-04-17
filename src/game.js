@@ -9,6 +9,7 @@ export default class Game {
         this.gameOver = false;
         this.speed = 0.35;
         this.score = 0;
+        this.multiplier = 1;
 
         this.clock = new THREE.Clock();
         this.running = true;
@@ -37,6 +38,7 @@ export default class Game {
         this.animate = this.animate.bind(this);
         // this.onClick = this.onClick.bind(this);
         this.start = this.start.bind(this);
+        this.incrementMultiplier = this.incrementMultiplier.bind(this);
 
         document.addEventListener('click', this.onClick);
 
@@ -119,6 +121,19 @@ export default class Game {
         return false;
     }
 
+    /////BUG BECAUSE POSITION OF SCOREMULT IS NOT CHANGED WHEN POSITION OF PLATFORM GROUP IS////
+    incrementMultiplier(playerPos, platform) {
+        let multPos = platform.scoreMult.position.x + platform.platformGroup.position.x;
+        console.log(multPos);
+        console.log(playerPos);
+        if (playerPos >= multPos - 0.5 && playerPos <= multPos + 0.5) {
+            console.log("increment multiplier");
+            this.multiplier += 1;
+        } else {
+            this.multiplier = 1;
+        }
+    }
+
     animate() {
         let id = requestAnimationFrame(this.animate);
         if (this.gameOver) cancelAnimationFrame(id);
@@ -126,15 +141,20 @@ export default class Game {
 
         //////TEMPORARY SOLUTION OF CHECKING FOR COLLISION WITH FIRST AND SECOND PLATFORM IN ARR///////////
         if (this.running) {
+            const currPlat = this.platformGenerator.platformArr[0];
             if (this.player.sphere.position.y <= -2.5 && 
-                !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platformGroup)) {
+                !this.collided(this.player.sphere.position.x, currPlat.platformGroup)) {
                     // cancelAnimationFrame(id);
                     console.log("GAME OVER");
                     console.log(`POINTS: ${this.score}`);
                     this.running = false;
                     document.exitPointerLock();
             } else if (this.player.sphere.position.y <= -2.5) {
-                this.score += 1;
+                if (currPlat.scoreMultExists) {
+                    this.incrementMultiplier(this.player.sphere.position.x, currPlat);
+                    console.log(this.multiplier);
+                }
+                this.score += this.multiplier;
                 if (this.score > 1) { 
                     this.platformGenerator.generatePlatform();
                 }
