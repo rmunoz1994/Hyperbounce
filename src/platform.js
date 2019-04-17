@@ -53,9 +53,9 @@ export default class Platform {
         // this.camera.position.lerp(vec, 0.05);
         let id = requestAnimationFrame(this.update);
         // this.hit.visible = true;
-        this.xScale += 0.25;
-        this.yScale += 0.25;
-        this.zScale += 0.25;
+        this.xScale += 0.2;
+        this.yScale += 0.2;
+        this.zScale += 0.2;
         const vec = new THREE.Vector3(this.xScale, this.yScale, this.zScale);
         if (this.xScale >= 5) {
             cancelAnimationFrame(this.update);
