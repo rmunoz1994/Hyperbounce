@@ -14,8 +14,6 @@ export default class Game {
         this.running = true;
         this.scene = new THREE.Scene();
         this.scene2 = new THREE.Scene();
-        // this.scene.background = new THREE.Color(0x494949);
-        // this.scene.background = new THREE.Color(0x000000);
 
         this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 100);
         this.camera.position.set(0, 2, 10);

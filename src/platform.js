@@ -1,4 +1,5 @@
 import Game from "./game.js";
+import { createContext } from "vm";
 
 export default class Platform {
 
@@ -10,9 +11,19 @@ export default class Platform {
         this.platform.position.y = -3.5;
         // game.scene.add(this.platform);
 
+
+        ////CIRCLE THAT RAISES YOUR SCORE MULTIPLIER////
+        const scoreMultGeo = new THREE.CircleBufferGeometry(0.5, 32);
+        const scoreMultMat = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+        this.scoreMult = new THREE.Mesh(scoreMultGeo, scoreMultMat);
+        this.scoreMult.position.y = -3.249;
+        this.scoreMult.rotation.x = Math.PI / 2;
+        this.scoreMult.position.x = this.getRandomArbitrary(-1.5, 1.5);
+
+        ////SHOCKWAVE EFFECT////
         const hitTexture = new THREE.TextureLoader().load("src/images/circleGradient.png");
         const hitGeo = new THREE.PlaneBufferGeometry(3,3,1);
-        const hitMat = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide, map: hitTexture, transparent: true});
+        const hitMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, map: hitTexture, transparent: true });
         this.hit = new THREE.Mesh(hitGeo, hitMat);
         this.hit.position.y = -3.5;
         this.hit.rotation.x = Math.PI / 2;
@@ -26,12 +37,18 @@ export default class Platform {
         // game.scene.add(this.hit);
         this.platformGroup = new THREE.Group();
         this.platformGroup.add(this.platform);
+        this.platformGroup.add(this.scoreMult);
         this.platformGroup.add(this.hit);
         game.scene.add(this.platformGroup);
 
         this.removePlatform = this.removePlatform.bind(this);
         this.collision = this.collision.bind(this);
         this.update = this.update.bind(this);
+        this.getRandomArbitrary = this.getRandomArbitrary.bind(this);
+    }
+
+    getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
     }
 
     removePlatform() {
@@ -47,14 +64,18 @@ export default class Platform {
     collision() {
         this.hit.visible = true;
         this.platform.material.emissive = new THREE.Color(0xff0000);
+        // this.createText();
         // this.platform.material.emissiveIntensity = 0.75;
         this.update();
     }
 
+    createText() {
+        let text = document.createElement('div');
+    }
+
     update() {
-        // this.camera.position.lerp(vec, 0.05);
+        ////SHOCKWAVE EFFECT////
         let id = requestAnimationFrame(this.update);
-        // this.hit.visible = true;
         this.xScale += 0.15;
         this.yScale += 0.15;
         this.zScale += 0.15;
