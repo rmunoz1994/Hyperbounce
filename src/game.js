@@ -6,6 +6,7 @@ export default class Game {
     constructor() {
         window.game = this;
         this.running = true;
+        this.gameOver = false;
         this.speed = 0.35;
         this.score = 0;
 
@@ -16,7 +17,7 @@ export default class Game {
         // this.scene.background = new THREE.Color(0x494949);
         // this.scene.background = new THREE.Color(0x000000);
 
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 100);
         this.camera.position.set(0, 2, 10);
         this.camera.rotation.x = -0.349066;
         this.camera.layers.enable(1);
@@ -111,17 +112,9 @@ export default class Game {
         this.camera.position.lerp(vec, 0.05);
     }   
 
-    // onClick(event) {
-    //     this.canvas.requestPointerLock();
-    // }
-
     collided(playerPos, platform) {
         const rightCollision = platform.position.x + 2;
         const leftCollision = platform.position.x - 2;
-        // console.log("-------------------");
-        // console.log(platform.position.x);
-        // console.log(leftCollision);
-        // console.log(rightCollision);
         if (playerPos >= leftCollision && playerPos <= rightCollision) {
             return true;
         }
@@ -130,35 +123,31 @@ export default class Game {
 
     animate() {
         let id = requestAnimationFrame(this.animate);
+        if (this.gameOver) cancelAnimationFrame(id);
         this.cameraLag(this.player.sphere.position.x);
 
         //////TEMPORARY SOLUTION OF CHECKING FOR COLLISION WITH FIRST AND SECOND PLATFORM IN ARR///////////
-        if (this.player.sphere.position.y <= -2.5 && 
-            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platformGroup)) {
-                cancelAnimationFrame(id);
-                console.log("GAME OVER");
-                console.log(`POINTS: ${this.score}`);
-                document.exitPointerLock();
-        } else if (this.player.sphere.position.y <= -2.5) {
-            this.score += 1;
-            if (this.score > 1) { 
-                this.platformGenerator.generatePlatform();
+        if (this.running) {
+            if (this.player.sphere.position.y <= -2.5 && 
+                !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platformGroup)) {
+                    // cancelAnimationFrame(id);
+                    console.log("GAME OVER");
+                    console.log(`POINTS: ${this.score}`);
+                    this.running = false;
+                    document.exitPointerLock();
+            } else if (this.player.sphere.position.y <= -2.5) {
+                this.score += 1;
+                if (this.score > 1) { 
+                    this.platformGenerator.generatePlatform();
+                }
+                this.platformGenerator.platformArr[0].collision();
+                this.platformGenerator.speed += 0.001;
+                this.player.speed += 0.001;
+                document.getElementById("score").innerHTML = "Score: " + this.score;
             }
-            this.platformGenerator.platformArr[0].collision();
-            this.platformGenerator.speed += 0.001;
-            this.player.speed += 0.001;
-            document.getElementById("score").innerHTML = "Score: " + this.score;
+        } else {
+            this.player.dead();
         }
-
-        // this.renderer.render(this.scene, this.cam
-        // this.renderer.clear();
-        // this.camera.layers.set(1);
-        // this.composer.render();
-        // this.renderer.clearDepth();
-        // this.camera.layers.set(0);
-        // this.renderer.render(this.scene, this.camera);
-
-
 
         this.composer.render();
         this.renderer.clearDepth();

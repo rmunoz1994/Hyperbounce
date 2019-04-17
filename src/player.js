@@ -14,6 +14,7 @@ export default class Player {
 
         this.onMouseMove = this.onMouseMove.bind(this);
         this.move = this.move.bind(this);
+        this.dead = this.dead.bind(this);
 
         document.addEventListener('mousemove', this.onMouseMove, false);
 
@@ -39,6 +40,15 @@ export default class Player {
             this.up = false;
         } else if (this.sphere.position.y <= -2.5) {
             this.up = true;
+        }
+    }
+
+    dead() {
+        const id = requestAnimationFrame(this.dead);
+        this.sphere.position.y -= this.speed;
+        if (this.sphere.position.y <= -20 ) {
+            cancelAnimationFrame(id);
+            game.gameOver = true;
         }
     }
 
