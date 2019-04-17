@@ -134,8 +134,7 @@ export default class Game {
 
         //////TEMPORARY SOLUTION OF CHECKING FOR COLLISION WITH FIRST AND SECOND PLATFORM IN ARR///////////
         if (this.player.sphere.position.y <= -2.5 && 
-            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platformGroup) && 
-            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[1].platformGroup)) {
+            !this.collided(this.player.sphere.position.x, this.platformGenerator.platformArr[0].platformGroup)) {
                 cancelAnimationFrame(id);
                 console.log("GAME OVER");
                 console.log(`POINTS: ${this.score}`);
