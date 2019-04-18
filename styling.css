@@ -1,8 +1,14 @@
+@font-face {
+    font-family: spaceFont;
+    src: url("src/fonts/nasalization-rg.ttf")
+}
+
 body { 
     margin: 0; 
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: spaceFont;
 }
 
 canvas { 
@@ -12,12 +18,17 @@ canvas {
 
 #start-btn {
     position: absolute;
+    font-family: spaceFont;
+    font-size: 24px;
+    width: 100px;
+    height: 40px;
 }
 
 #score{
     position: absolute;
     top: 10px;
     font-size: 32px;
+    font-family: spaceFont;
     color: white;
 }
 

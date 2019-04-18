@@ -15,6 +15,7 @@ export default class Player {
         this.onMouseMove = this.onMouseMove.bind(this);
         this.move = this.move.bind(this);
         this.dead = this.dead.bind(this);
+        this.deathAnimation = this.deathAnimation.bind(this);
 
         document.addEventListener('mousemove', this.onMouseMove, false);
 
@@ -44,6 +45,11 @@ export default class Player {
     }
 
     dead() {
+        document.removeEventListener('mousemove', this.onMouseMove);
+        this.deathAnimation();
+    }
+
+    deathAnimation() {
         const id = requestAnimationFrame(this.dead);
         this.sphere.position.y -= this.speed;
         if (this.sphere.position.y <= -20 ) {

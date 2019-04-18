@@ -5,7 +5,9 @@ export default class Platform {
 
     constructor(generateScoreMult = true) {
         const platGeo = new THREE.CylinderBufferGeometry(2, 2, 0.5, 32);
-        const platMat = new THREE.MeshStandardMaterial({ color: 0x890000 });
+        // const platMat = new THREE.MeshStandardMaterial({ color: 0x890000 }); //RED
+        const platMat = new THREE.MeshStandardMaterial({ color: 0x002144 }); //BLUE
+        
         this.platform = new THREE.Mesh(platGeo, platMat);
         this.platform.layers.enable(1);
         this.platform.position.y = -3.5;
@@ -48,6 +50,7 @@ export default class Platform {
         this.collision = this.collision.bind(this);
         this.update = this.update.bind(this);
         this.getRandomArbitrary = this.getRandomArbitrary.bind(this);
+        // this.push = this.push.bind(this);
     }
 
     getRandomArbitrary(min, max) {
@@ -66,15 +69,29 @@ export default class Platform {
 
     collision() {
         this.hit.visible = true;
-        this.platform.material.emissive = new THREE.Color(0xff0000);
+        // this.platform.material.emissive = new THREE.Color(0xff0000); //RED
+        this.platform.material.emissive = new THREE.Color(0x007CFF); //BLUE
         // this.createText();
         // this.platform.material.emissiveIntensity = 0.75;
         this.update();
+        // this.push();
     }
 
     createText() {
         let text = document.createElement('div');
     }
+
+    // push() {
+    //     let id = requestAnimationFrame(this.push);
+    //     if (this.platformGroup.position.y > -1) {
+    //         this.platformGroup.position.y -= 0.1;
+    //     } else {
+    //         this.platformGroup.position.y += 0.1;
+    //     }
+    //     if (this.platformGroup.position.y === 0) {
+    //         cancelAnimationFrame(id);
+    //     }
+    // }
 
     update() {
         ////SHOCKWAVE EFFECT////

@@ -10,6 +10,7 @@ export default class Game {
         this.speed = 0.35;
         this.score = 0;
         this.multiplier = 1;
+        this.speed = 0.1;
 
         this.clock = new THREE.Clock();
         this.running = true;
@@ -74,8 +75,6 @@ export default class Game {
         const starMat = new THREE.PointsMaterial({color: 0x888888, size: 0.15});
         this.starField = new THREE.Points(starGeo, starMat);
         this.scene.add(this.starField);
-
-
 
         // const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
         // effectFXAA.uniforms.resolution.value.set(1 / window.innerWidth, 1 / window.innerHeight);
@@ -169,7 +168,9 @@ export default class Game {
         } else {
             this.player.dead();
         }
-        this.starField.position.z += 0.1;
+        
+        this.speed += 0.001;
+        this.starField.position.z += this.speed;
 
         this.composer.render();
         this.renderer.clearDepth();
