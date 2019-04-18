@@ -18,10 +18,21 @@ canvas {
 
 #start-btn {
     position: absolute;
+    bottom: 150px;
     font-family: spaceFont;
-    font-size: 24px;
-    width: 100px;
-    height: 40px;
+    color: white;
+    font-size: 64px;
+    width: 240px;
+    height: 80px;
+    border-radius: 8px;
+    border-color: #007CFF;
+    background-color: rgba(128,128,128, 0.1);
+    cursor: pointer;
+    box-shadow: 0 0 10px #007CFF;
+}
+
+#start-btn:hover {
+    color: gray;
 }
 
 #score{
