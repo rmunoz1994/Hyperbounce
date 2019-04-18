@@ -36,15 +36,13 @@ export default class Game {
         this.cameraLag = this.cameraLag.bind(this);
         this.collided = this.collided.bind(this);
         this.animate = this.animate.bind(this);
-        // this.onClick = this.onClick.bind(this);
         this.start = this.start.bind(this);
         this.incrementMultiplier = this.incrementMultiplier.bind(this);
 
-        document.addEventListener('click', this.onClick);
-
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
         this.renderer.autoClear = false;
-        this.renderer.setClearColor(0x242424);
+        // this.renderer.setClearColor(0x242424);
+        this.renderer.setClearColor(0x080808);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
         this.canvas = this.renderer.domElement;
@@ -64,6 +62,19 @@ export default class Game {
         // renderPass2.renderToScreen = true;
         // this.composer2.addPass(renderPass2);
 
+        
+        const starGeo = new THREE.Geometry();
+        for (let i = 0; i < 1000; i++) {
+            let star = new THREE.Vector3();
+            star.x = THREE.Math.randFloatSpread(100);
+            star.y = THREE.Math.randFloatSpread(100);
+            star.z = THREE.Math.randFloatSpread(100);
+            starGeo.vertices.push(star);
+        }
+        const starMat = new THREE.PointsMaterial({color: 0x888888, size: 0.15});
+        this.starField = new THREE.Points(starGeo, starMat);
+        this.scene.add(this.starField);
+
 
 
         // const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
@@ -82,20 +93,12 @@ export default class Game {
         this.renderer.gammaOutput = true;
         this.renderer.toneMappingExposure = Math.pow(0.9, 4.0); 
 
-        // this.renderer.clear();
-        // this.camera.layers.set(1);
-        // this.renderer.clearDepth();
-        // this.camera.layers.set(0);
-        // this.renderer.render(this.scene, this.camera);
-        // this.composer.render();
-        // this.renderer.render(this.scene, this.camera);
         this.composer.render();
         this.renderer.clearDepth();
         this.renderer.render(this.scene2, this.camera);
-        // this.renderer.render(this.scene, this.camera);
+
         this.startButton = document.getElementById("start-btn");
         this.startButton.addEventListener('click', this.start);
-        // this.animate();
     }
 
     start() {
@@ -166,6 +169,7 @@ export default class Game {
         } else {
             this.player.dead();
         }
+        this.starField.position.z += 0.1;
 
         this.composer.render();
         this.renderer.clearDepth();

@@ -3,7 +3,7 @@ import { createContext } from "vm";
 
 export default class Platform {
 
-    constructor() {
+    constructor(generateScoreMult = true) {
         const platGeo = new THREE.CylinderBufferGeometry(2, 2, 0.5, 32);
         const platMat = new THREE.MeshStandardMaterial({ color: 0x890000 });
         this.platform = new THREE.Mesh(platGeo, platMat);
@@ -13,14 +13,14 @@ export default class Platform {
 
 
         ////CIRCLE THAT RAISES YOUR SCORE MULTIPLIER////
-        this.scoreMultExists = Math.random() >= 0.75;
+        if (generateScoreMult) this.scoreMultExists = Math.random() <= 0.25;
         if (this.scoreMultExists) {
             const scoreMultGeo = new THREE.CircleBufferGeometry(0.5, 32);
             const scoreMultMat = new THREE.MeshBasicMaterial({ color: 0x404040, side: THREE.DoubleSide });
             this.scoreMult = new THREE.Mesh(scoreMultGeo, scoreMultMat);
             this.scoreMult.position.y = -3.249;
             this.scoreMult.rotation.x = Math.PI / 2;
-            this.scoreMult.position.x = this.getRandomArbitrary(-1.25, 1.25);
+            this.scoreMult.position.x = this.getRandomArbitrary(-1.2, 1.2);
         }
 
         ////SHOCKWAVE EFFECT////
