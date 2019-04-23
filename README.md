@@ -1,4 +1,4 @@
-## Bouncy (Splashy Adaptation...title in progress...)
+## HYPERBOUNCE
 
 ### Background
 This is a game where the player object is constantly bouncing up and down, and can move left and right based on user input. As the player is bouncing, platforms are moving towards the player at a gradually increasing speed. The player must hit these platforms to gain points. If the player misses the platform, it's game over.

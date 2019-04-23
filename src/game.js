@@ -38,6 +38,7 @@ export default class Game {
         this.collided = this.collided.bind(this);
         this.animate = this.animate.bind(this);
         this.start = this.start.bind(this);
+        this.end = this.end.bind(this);
         this.incrementMultiplier = this.incrementMultiplier.bind(this);
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
@@ -90,9 +91,12 @@ export default class Game {
         this.renderer.render(this.scene2, this.camera);
 
         this.startButton = document.getElementById("start-btn");
+        this.retryButton = document.getElementById("retry-btn");
         this.directions = document.getElementById("directions-container");
         this.scoreHtml = document.getElementById("score");
+        this.links = document.getElementById("links");
         this.title = document.getElementById("title");
+        this.gameOverTitle = document.getElementById("game-over");
         this.startButton.addEventListener('click', this.start);
     }
 
@@ -101,11 +105,27 @@ export default class Game {
         this.startButton.classList.add("hidden");
         this.directions.classList.add("hidden");
         this.title.classList.add("hidden");
+        this.links.classList.add("hidden");
         this.scoreHtml.classList.remove("hidden");
         this.canvas.requestPointerLock();
         this.animate();
         this.player.move();
         this.platformGenerator.update();
+    }
+
+    end() {
+        this.running = false;
+        if (window.highScore < this.score) {
+            window.highScore = this.score;
+        }
+        this.links.classList.remove("hidden");
+        this.gameOverTitle.classList.remove("hidden");
+        this.retryButton.classList.remove("hidden");
+    }
+
+    restart() {
+        this.scene.remove(this.player);
+
     }
 
     cameraLag(spherePos) {
@@ -125,10 +145,7 @@ export default class Game {
     
     incrementMultiplier(playerPos, platform) {
         let multPos = platform.scoreMult.position.x + platform.platformGroup.position.x;
-        console.log(multPos);
-        console.log(playerPos);
         if (playerPos >= multPos - 0.5 && playerPos <= multPos + 0.5) {
-            console.log("increment multiplier");
             this.multiplier += 1;
         } else {
             this.multiplier = 1;
@@ -137,7 +154,11 @@ export default class Game {
 
     animate() {
         let id = requestAnimationFrame(this.animate);
-        if (this.gameOver) cancelAnimationFrame(id);
+        if (this.gameOver) {
+            this.end();
+            console.log("this");
+            cancelAnimationFrame(id);
+        }
         // this.player.sphere.position.x += this.player.movement;
         let playerPos = this.player.sphere.position;
         this.cameraLag(playerPos.x);

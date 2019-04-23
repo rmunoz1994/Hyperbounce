@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 window.THREE = THREE;
+window.highScore = 0;
 // import { EffectComposer, RenderPass, ShaderPass, SepiaShader } from "postprocessing";
 require("three/examples/js/shaders/CopyShader");
 require("three/examples/js/postprocessing/EffectComposer");

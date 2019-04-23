@@ -53,7 +53,7 @@ export default class Player {
     }
 
     deathAnimation() {
-        const id = requestAnimationFrame(this.dead);
+        const id = requestAnimationFrame(this.deathAnimation);
         this.sphere.position.y -= this.speed;
         if (this.sphere.position.y <= -20 ) {
             cancelAnimationFrame(id);

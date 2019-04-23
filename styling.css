@@ -27,7 +27,7 @@ canvas {
     text-shadow: 0 0 20px #007CFF;
 }
 
-#start-btn {
+#start-btn{
     position: absolute;
     bottom: 150px;
     font-family: spaceFont;
@@ -40,10 +40,33 @@ canvas {
     background-color: rgba(20,20,20);
     cursor: pointer;
     box-shadow: 0 0 10px #007CFF;
+    outline: none;
 }
 
 #start-btn:hover {
     color: gray;
+}
+
+#retry-btn {
+    position: absolute;
+    bottom: 150px;
+    font-family: spaceFont;
+    color: red;
+    font-size: 64px;
+    width: 240px;
+    height: 80px;
+    border-radius: 8px;
+    border-color: red;
+    background-color: rgba(20,20,20);
+    cursor: pointer;
+    box-shadow: 0 0 10px red;
+    outline: none;
+}
+
+#retry-btn:hover {
+    color: #007CFF;
+    border-color: #007CFF;
+    box-shadow: 0 0 10px #007CFF;
 }
 
 #score{
@@ -81,3 +104,29 @@ canvas {
     box-shadow: 0 0 10px #007CFF;
 }
 
+#links {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    color: white;
+}
+ 
+#icon {
+    font-size: 50px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+#icon:hover {
+    text-shadow: 0 0 20px #007CFF;
+}
+
+#game-over {
+    position: absolute;
+    bottom: 400px;
+    color: red;
+    font-size: 120px;
+    font-family: spaceFont;
+    text-shadow: 0 0 20px red;
+
+}
