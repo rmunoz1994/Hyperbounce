@@ -18,10 +18,20 @@ export default class Player {
         this.move = this.move.bind(this);
         this.dead = this.dead.bind(this);
         this.deathAnimation = this.deathAnimation.bind(this);
+        this.reset = this.reset.bind(this);
 
         document.addEventListener('mousemove', this.onMouseMove, false);
 
         // this.move();
+    }
+
+    reset() {
+        this.sphere.position.x = 0;
+        this.sphere.position.y = -2.5;
+        this.speed = 0.3;
+        this.up = true;
+        this.movement = 0;
+        document.addEventListener('mousemove', this.onMouseMove, false);
     }
 
     onMouseMove(event) {

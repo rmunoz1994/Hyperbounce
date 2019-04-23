@@ -7,7 +7,7 @@ export default class Game {
         window.game = this;
         this.running = true;
         this.gameOver = false;
-        this.speed = 0.35;
+        // this.speed = 0.35;
         this.score = 0;
         this.multiplier = 1;
         this.speed = 0.1;
@@ -39,6 +39,7 @@ export default class Game {
         this.animate = this.animate.bind(this);
         this.start = this.start.bind(this);
         this.end = this.end.bind(this);
+        this.restart = this.restart.bind(this);
         this.incrementMultiplier = this.incrementMultiplier.bind(this);
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
@@ -98,6 +99,7 @@ export default class Game {
         this.title = document.getElementById("title");
         this.gameOverTitle = document.getElementById("game-over");
         this.startButton.addEventListener('click', this.start);
+        this.retryButton.addEventListener('click', this.restart);
     }
 
     start() {
@@ -121,11 +123,23 @@ export default class Game {
         this.links.classList.remove("hidden");
         this.gameOverTitle.classList.remove("hidden");
         this.retryButton.classList.remove("hidden");
+        console.log(this.platformGenerator.platformArr);
     }
 
     restart() {
-        this.scene.remove(this.player);
-
+        this.links.classList.add("hidden");
+        this.gameOverTitle.classList.add("hidden");
+        this.retryButton.classList.add("hidden");
+        this.player.reset();
+        this.platformGenerator.reset();
+        this.camera.position.set(0, 2, 10);
+        this.score = 0;
+        this.gameOver = false;
+        this.running = true;
+        this.multiplier = 1;
+        this.speed = 0.1;
+        this.canvas.requestPointerLock();
+        this.animate();
     }
 
     cameraLag(spherePos) {

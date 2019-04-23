@@ -7,6 +7,17 @@ export default class PlatformGenerator {
         this.update = this.update.bind(this);
         this.getRandomArbitrary = this.getRandomArbitrary.bind(this);
         this.speed = 0.3;
+        this.reset = this.reset.bind(this);
+    }
+
+    reset() {
+        for (let i = 0; i < this.platformArr.length; i++) {
+            this.platformArr[i].removePlatform();
+        }
+        this.platformArr = [];
+        this.speed = 0.3;
+        this.generateFirstPlatforms();
+        this.generatePlatform();
     }
 
     getRandomArbitrary(min, max) {
