@@ -56,14 +56,7 @@ export default class Game {
         const renderPass = new THREE.RenderPass(this.scene, this.camera);
         this.composer.addPass(renderPass);
 
-
-
-        // this.composer2 = new THREE.EffectComposer(this.renderer);     
-        // const renderPass2 = new THREE.RenderPass(this.scene2, this.camera);
-        // renderPass2.renderToScreen = true;
-        // this.composer2.addPass(renderPass2);
-
-        
+        this.particleCount = 1000;
         const starGeo = new THREE.Geometry();
         for (let i = 0; i < 1000; i++) {
             let star = new THREE.Vector3();
@@ -97,12 +90,18 @@ export default class Game {
         this.renderer.render(this.scene2, this.camera);
 
         this.startButton = document.getElementById("start-btn");
+        this.directions = document.getElementById("directions-container");
+        this.scoreHtml = document.getElementById("score");
+        this.title = document.getElementById("title");
         this.startButton.addEventListener('click', this.start);
     }
 
     start() {
         this.startButton.disabled = true;
         this.startButton.classList.add("hidden");
+        this.directions.classList.add("hidden");
+        this.title.classList.add("hidden");
+        this.scoreHtml.classList.remove("hidden");
         this.canvas.requestPointerLock();
         this.animate();
         this.player.move();
@@ -139,21 +138,21 @@ export default class Game {
     animate() {
         let id = requestAnimationFrame(this.animate);
         if (this.gameOver) cancelAnimationFrame(id);
-        this.cameraLag(this.player.sphere.position.x);
+        // this.player.sphere.position.x += this.player.movement;
+        let playerPos = this.player.sphere.position;
+        this.cameraLag(playerPos.x);
 
-        //////TEMPORARY SOLUTION OF CHECKING FOR COLLISION WITH FIRST AND SECOND PLATFORM IN ARR///////////
         if (this.running) {
             const currPlat = this.platformGenerator.platformArr[0];
-            if (this.player.sphere.position.y <= -2.5 && 
-                !this.collided(this.player.sphere.position.x, currPlat.platformGroup)) {
-                    // cancelAnimationFrame(id);
+            if (playerPos.y <= -2.5 && 
+                !this.collided(playerPos.x, currPlat.platformGroup)) {
                     console.log("GAME OVER");
                     console.log(`POINTS: ${this.score}`);
                     this.running = false;
                     document.exitPointerLock();
-            } else if (this.player.sphere.position.y <= -2.5) {
+            } else if (playerPos.y <= -2.5) {
                 if (currPlat.scoreMultExists) {
-                    this.incrementMultiplier(this.player.sphere.position.x, currPlat);
+                    this.incrementMultiplier(playerPos.x, currPlat);
                     console.log(this.multiplier);
                 }
                 this.score += this.multiplier;
@@ -169,8 +168,8 @@ export default class Game {
             this.player.dead();
         }
         
-        this.speed += 0.001;
         this.starField.position.z += this.speed;
+        this.speed += 0.001;
 
         this.composer.render();
         this.renderer.clearDepth();

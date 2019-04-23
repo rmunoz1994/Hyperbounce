@@ -11,6 +11,8 @@ export default class Player {
         this.speed = 0.3;
         this.up = true;
         this.moving = false;
+        this.movement = 0;
+        this.sensitivity = 0.045;
 
         this.onMouseMove = this.onMouseMove.bind(this);
         this.move = this.move.bind(this);
@@ -25,7 +27,8 @@ export default class Player {
     onMouseMove(event) {
         event.preventDefault();
         if (this.moving) {
-            this.sphere.position.x += event.movementX * 0.03;
+            // this.movement = event.movementX * this.sensitivity;
+            this.sphere.position.x += event.movementX * this.sensitivity;
         }
     }
 

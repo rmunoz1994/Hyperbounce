@@ -58,7 +58,7 @@ export default class Platform {
     }
 
     removePlatform() {
-        game.scene.remove(this.platform);
+        game.scene.remove(this.platformGroup);
         this.platform.geometry.dispose();
         this.platform.material.dispose();
         this.platform = undefined;
