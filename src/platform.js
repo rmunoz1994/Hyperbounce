@@ -62,9 +62,6 @@ export default class Platform {
         this.platform.geometry.dispose();
         this.platform.material.dispose();
         this.platform = undefined;
-        // this.hit.geometry.dispose();
-        // this.hit.material.dispose();
-        // this.hit = undefined;
     }
 
     collision() {
@@ -80,18 +77,6 @@ export default class Platform {
     createText() {
         let text = document.createElement('div');
     }
-
-    // push() {
-    //     let id = requestAnimationFrame(this.push);
-    //     if (this.platformGroup.position.y > -1) {
-    //         this.platformGroup.position.y -= 0.1;
-    //     } else {
-    //         this.platformGroup.position.y += 0.1;
-    //     }
-    //     if (this.platformGroup.position.y === 0) {
-    //         cancelAnimationFrame(id);
-    //     }
-    // }
 
     update() {
         ////SHOCKWAVE EFFECT////

@@ -35,7 +35,6 @@ export default class PlatformGenerator {
     generatePlatform() {
         const platform = new Platform();
         platform.platformGroup.translateX(this.getRandomArbitrary(-6, 6));
-        // console.log(platform.platformGroup.position.x);
         platform.platformGroup.translateZ(-20);
         this.platformArr.push(platform);
     }

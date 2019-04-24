@@ -77,8 +77,8 @@ export default class Game {
             starGeo.vertices.push(star);
         }
         const starMat = new THREE.PointsMaterial({color: 0x888888, size: 0.2});
-        this.starField = new THREE.Points(starGeo, starMat);
-        this.scene.add(this.starField);
+        this.stars = new THREE.Points(starGeo, starMat);
+        this.scene.add(this.stars);
 
         const bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
         bloomPass.threshold = 0.3;
@@ -109,11 +109,11 @@ export default class Game {
 
     animateStars() {
         for (let i = 0; i < 1000; i++) {
-            let star = this.starField.geometry.vertices[i];
+            let star = this.stars.geometry.vertices[i];
             star.add(new THREE.Vector3(0,0,this.speed / 2));
             if (star.z > 50) star.add(new THREE.Vector3(0, 0, -100));
         }
-        this.starField.geometry.verticesNeedUpdate = true;
+        this.stars.geometry.verticesNeedUpdate = true;
     }
 
     start() {
