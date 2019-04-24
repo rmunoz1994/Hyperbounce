@@ -12,7 +12,7 @@ export default class Player {
         this.up = true;
         this.moving = false;
         this.movement = 0;
-        this.sensitivity = 0.045;
+        this.sensitivity = 0.03;
 
         this.onMouseMove = this.onMouseMove.bind(this);
         this.move = this.move.bind(this);

@@ -5,6 +5,14 @@ export default class Game {
 
     constructor() {
         window.game = this;
+        this.localStorageName = "hyperbouncescore";
+        if (localStorage.getItem(this.localStorageName) === null) {
+            this.highScore = 0;
+        } else {
+            this.highScore = localStorage.getItem(this.localStorageName);
+        }
+        console.log(this.highScore);
+        document.getElementById("highscore").innerHTML = "High Score: " + this.highScore;
         this.running = true;
         this.gameOver = false;
         // this.speed = 0.35;
@@ -71,11 +79,6 @@ export default class Game {
         this.starField = new THREE.Points(starGeo, starMat);
         this.scene.add(this.starField);
 
-        // const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-        // effectFXAA.uniforms.resolution.value.set(1 / window.innerWidth, 1 / window.innerHeight);
-        // this.composer.addPass(effectFXAA);
-
-
         const bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
         bloomPass.threshold = 0.3;
         bloomPass.strength = 3;
@@ -95,6 +98,7 @@ export default class Game {
         this.retryButton = document.getElementById("retry-btn");
         this.directions = document.getElementById("directions-container");
         this.scoreHtml = document.getElementById("score");
+        this.highScoreMessage = document.getElementById("highscore");
         this.links = document.getElementById("links");
         this.title = document.getElementById("title");
         this.gameOverTitle = document.getElementById("game-over");
@@ -117,9 +121,14 @@ export default class Game {
 
     end() {
         this.running = false;
-        if (window.highScore < this.score) {
-            window.highScore = this.score;
+        if (this.highScore < this.score) {
+            localStorage.setItem(this.localStorageName, this.score);
+            this.highScore = this.score;
+            this.highScoreMessage.innerHTML = "New High Score! " + this.highScore;
+        } else {
+            this.highScoreMessage.innerHTML = "High Score: " + this.highScore;
         }
+        this.highScoreMessage.classList.remove("hidden");
         this.links.classList.remove("hidden");
         this.gameOverTitle.classList.remove("hidden");
         this.retryButton.classList.remove("hidden");
@@ -130,6 +139,7 @@ export default class Game {
         this.links.classList.add("hidden");
         this.gameOverTitle.classList.add("hidden");
         this.retryButton.classList.add("hidden");
+        this.highScoreMessage.classList.add("hidden");
         this.player.reset();
         this.platformGenerator.reset();
         this.camera.position.set(0, 2, 10);

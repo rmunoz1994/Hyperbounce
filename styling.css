@@ -21,6 +21,15 @@ a {
     color: white;
 }
 
+#highscore {
+    position: absolute;
+    top: 80px;
+    font-size: 32px;
+    font-family: spaceFont;
+    color: #007CFF;
+    text-shadow: 0 0 4px #007CFF;
+}
+
 #title {
     position: absolute;
     top: 0px;
