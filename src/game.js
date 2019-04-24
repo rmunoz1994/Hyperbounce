@@ -110,7 +110,7 @@ export default class Game {
     animateStars() {
         for (let i = 0; i < 1000; i++) {
             let star = this.stars.geometry.vertices[i];
-            star.add(new THREE.Vector3(0,0,this.speed / 2));
+            star.add(new THREE.Vector3(0,0,this.speed * 0.35));
             if (star.z > 50) star.add(new THREE.Vector3(0, 0, -100));
         }
         this.stars.geometry.verticesNeedUpdate = true;
