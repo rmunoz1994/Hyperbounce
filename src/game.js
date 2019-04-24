@@ -49,6 +49,7 @@ export default class Game {
         this.end = this.end.bind(this);
         this.restart = this.restart.bind(this);
         this.incrementMultiplier = this.incrementMultiplier.bind(this);
+        this.animateStars = this.animateStars.bind(this);
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
         this.renderer.autoClear = false;
@@ -75,7 +76,7 @@ export default class Game {
             star.z = THREE.Math.randFloatSpread(100);
             starGeo.vertices.push(star);
         }
-        const starMat = new THREE.PointsMaterial({color: 0x888888, size: 0.15});
+        const starMat = new THREE.PointsMaterial({color: 0x888888, size: 0.2});
         this.starField = new THREE.Points(starGeo, starMat);
         this.scene.add(this.starField);
 
@@ -104,6 +105,15 @@ export default class Game {
         this.gameOverTitle = document.getElementById("game-over");
         this.startButton.addEventListener('click', this.start);
         this.retryButton.addEventListener('click', this.restart);
+    }
+
+    animateStars() {
+        for (let i = 0; i < 1000; i++) {
+            let star = this.starField.geometry.vertices[i];
+            star.add(new THREE.Vector3(0,0,this.speed / 2));
+            if (star.z > 50) star.add(new THREE.Vector3(0, 0, -100));
+        }
+        this.starField.geometry.verticesNeedUpdate = true;
     }
 
     start() {
@@ -213,7 +223,7 @@ export default class Game {
             this.player.dead();
         }
         
-        this.starField.position.z += this.speed;
+        this.animateStars();
         this.speed += 0.001;
 
         this.composer.render();
