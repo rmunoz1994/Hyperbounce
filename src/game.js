@@ -122,9 +122,9 @@ export default class Game {
     end() {
         this.running = false;
         if (this.highScore < this.score) {
+            this.highScoreMessage.innerHTML = "New High Score! Previous: " + this.highScore;
             localStorage.setItem(this.localStorageName, this.score);
             this.highScore = this.score;
-            this.highScoreMessage.innerHTML = "New High Score! " + this.highScore;
         } else {
             this.highScoreMessage.innerHTML = "High Score: " + this.highScore;
         }
