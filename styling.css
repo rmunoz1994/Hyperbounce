@@ -17,6 +17,10 @@ canvas {
     height: 100% 
 }
 
+a {
+    color: white;
+}
+
 #title {
     position: absolute;
     top: 0px;
@@ -80,6 +84,7 @@ canvas {
 
 .hidden {
     display: none;
+    opacity: 0;
 }
 
 .directions {
