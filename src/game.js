@@ -201,14 +201,11 @@ export default class Game {
             const currPlat = this.platformGenerator.platformArr[0];
             if (playerPos.y <= -2.5 && 
                 !this.collided(playerPos.x, currPlat.platformGroup)) {
-                    console.log("GAME OVER");
-                    console.log(`POINTS: ${this.score}`);
                     this.running = false;
                     document.exitPointerLock();
             } else if (playerPos.y <= -2.5) {
                 if (currPlat.scoreMultExists) {
                     this.incrementMultiplier(playerPos.x, currPlat);
-                    console.log(this.multiplier);
                 }
                 this.score += this.multiplier;
                 if (this.score > 1) { 
