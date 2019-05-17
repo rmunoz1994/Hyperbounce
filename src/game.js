@@ -193,7 +193,6 @@ export default class Game {
             console.log("this");
             cancelAnimationFrame(id);
         }
-        // this.player.sphere.position.x += this.player.movement;
         let playerPos = this.player.sphere.position;
         this.cameraLag(playerPos.x);
 
@@ -226,7 +225,5 @@ export default class Game {
         this.composer.render();
         this.renderer.clearDepth();
         this.renderer.render(this.scene2, this.camera);
-
-        // this.renderer.render(this.scene, this.camera);
     }
 }
