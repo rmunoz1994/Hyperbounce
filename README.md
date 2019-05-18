@@ -16,7 +16,7 @@ This is a game where the player object is constantly bouncing up and down, and c
 ---
 ### Wireframes
 
-https://wireframe.cc/pro/pp/1dfb9dfca240438
+![wireframe](https://raw.githubusercontent.com/rmunoz1994/Hyperbounce/master/src/images/hyperbounce_wireframe.png)
 
 ---
 ### Architecture and Technologies
