@@ -1,5 +1,6 @@
 import Player from './player.js';
 import PlatformGenerator from './platform_generator.js';
+import {Howl, Howler} from 'howler';
 
 export default class Game {
 
@@ -19,6 +20,9 @@ export default class Game {
         this.score = 0;
         this.multiplier = 1;
         this.speed = 0.1;
+        this.bounceFX = new Howl({
+            src: ["./src/sounds/bounce_test.wav"]
+        });
 
         this.clock = new THREE.Clock();
         this.running = true;
@@ -213,6 +217,7 @@ export default class Game {
                 this.platformGenerator.platformArr[0].collision();
                 this.platformGenerator.speed += 0.001;
                 this.player.speed += 0.001;
+                this.bounceFX.play();
                 document.getElementById("score").innerHTML = "Score: " + this.score;
             }
         } else {
