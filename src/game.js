@@ -1,6 +1,7 @@
 import Player from './player.js';
 import PlatformGenerator from './platform_generator.js';
 import {Howl, Howler} from 'howler';
+import { join } from 'path';
 
 export default class Game {
 
@@ -20,9 +21,17 @@ export default class Game {
         this.score = 0;
         this.multiplier = 1;
         this.speed = 0.1;
-        this.bounceFX = new Howl({
-            src: ["./src/sounds/bounce_test.wav"]
+
+        this.bgm = new Howl({
+            src: ["./src/sounds/space_love_attack.mp3"],
+            autoplay: false,
+            loop: true
         });
+        this.bounceSFX = new Howl({
+            src: ["./src/sounds/bounce_test02.wav"],
+            volume: 0.2
+        });
+        this.bounceSFX.rate(4);
 
         this.clock = new THREE.Clock();
         this.running = true;
@@ -131,6 +140,7 @@ export default class Game {
         this.animate();
         this.player.move();
         this.platformGenerator.update();
+        this.bgm.play();
     }
 
     end() {
@@ -194,7 +204,6 @@ export default class Game {
         let id = requestAnimationFrame(this.animate);
         if (this.gameOver) {
             this.end();
-            console.log("this");
             cancelAnimationFrame(id);
         }
         let playerPos = this.player.sphere.position;
@@ -217,7 +226,7 @@ export default class Game {
                 this.platformGenerator.platformArr[0].collision();
                 this.platformGenerator.speed += 0.001;
                 this.player.speed += 0.001;
-                this.bounceFX.play();
+                this.bounceSFX.play();
                 document.getElementById("score").innerHTML = "Score: " + this.score;
             }
         } else {
