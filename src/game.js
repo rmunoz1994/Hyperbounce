@@ -25,6 +25,7 @@ export default class Game {
         this.bgm = new Howl({
             src: ["./src/sounds/space_love_attack.mp3"],
             autoplay: false,
+            volume: 0.9,
             loop: true
         });
         this.bounceSFX = new Howl({
@@ -60,6 +61,7 @@ export default class Game {
         this.animate = this.animate.bind(this);
         this.start = this.start.bind(this);
         this.end = this.end.bind(this);
+        this.toggleSound = this.toggleSound.bind(this);
         this.restart = this.restart.bind(this);
         this.incrementMultiplier = this.incrementMultiplier.bind(this);
         this.animateStars = this.animateStars.bind(this);
@@ -110,6 +112,7 @@ export default class Game {
 
         this.startButton = document.getElementById("start-btn");
         this.retryButton = document.getElementById("retry-btn");
+        this.soundButton = document.getElementById("sound-icon")
         this.directions = document.getElementById("directions-container");
         this.scoreHtml = document.getElementById("score");
         this.highScoreMessage = document.getElementById("highscore");
@@ -118,6 +121,7 @@ export default class Game {
         this.gameOverTitle = document.getElementById("game-over");
         this.startButton.addEventListener('click', this.start);
         this.retryButton.addEventListener('click', this.restart);
+        this.soundButton.addEventListener('click', this.toggleSound);
     }
 
     animateStars() {
@@ -132,6 +136,7 @@ export default class Game {
     start() {
         this.startButton.disabled = true;
         this.startButton.classList.add("hidden");
+        this.soundButton.classList.add("hidden");
         this.directions.classList.add("hidden");
         this.title.classList.add("hidden");
         this.links.classList.add("hidden");
@@ -156,12 +161,26 @@ export default class Game {
         this.links.classList.remove("hidden");
         this.gameOverTitle.classList.remove("hidden");
         this.retryButton.classList.remove("hidden");
+        this.soundButton.classList.remove("hidden");
         console.log(this.platformGenerator.platformArr);
+    }
+
+    toggleSound() {
+        if (this.soundButton.classList.contains('fa-volume-up')) {
+            this.soundButton.classList.remove('fa-volume-up');
+            this.soundButton.classList.add('fa-volume-mute');
+            this.bgm.mute(true);
+        } else {
+            this.soundButton.classList.remove('fa-volume-mute');
+            this.soundButton.classList.add('fa-volume-up');
+            this.bgm.mute(false);
+        }
     }
 
     restart() {
         this.links.classList.add("hidden");
         this.gameOverTitle.classList.add("hidden");
+        this.soundButton.classList.add("hidden");
         this.retryButton.classList.add("hidden");
         this.highScoreMessage.classList.add("hidden");
         this.player.reset();
