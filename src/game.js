@@ -214,8 +214,10 @@ export default class Game {
         let multPos = platform.scoreMult.position.x + platform.platformGroup.position.x;
         if (playerPos >= multPos - 0.5 && playerPos <= multPos + 0.5) {
             this.multiplier += 1;
+            return true;
         } else {
             this.multiplier = 1;
+            return false;
         }
     }
 
@@ -235,14 +237,15 @@ export default class Game {
                     this.running = false;
                     document.exitPointerLock();
             } else if (playerPos.y <= -2.5) {
+                let multHit;
                 if (currPlat.scoreMultExists) {
-                    this.incrementMultiplier(playerPos.x, currPlat);
-                }
+                    multHit = this.incrementMultiplier(playerPos.x, currPlat);
+                } 
                 this.score += this.multiplier;
                 if (this.score > 1) { 
                     this.platformGenerator.generatePlatform();
                 }
-                this.platformGenerator.platformArr[0].collision();
+                this.platformGenerator.platformArr[0].collision(multHit);
                 this.platformGenerator.speed += 0.001;
                 this.player.speed += 0.001;
                 this.bounceSFX.play();

@@ -64,7 +64,10 @@ export default class Platform {
         this.platform = undefined;
     }
 
-    collision() {
+    collision(multHit) {
+        if (multHit) {
+            this.hit.material.color.setHex(0xff0000);
+        }
         this.hit.visible = true;
         // this.platform.material.emissive = new THREE.Color(0xff0000); //RED
         this.platform.material.emissive = new THREE.Color(0x007CFF); //BLUE
