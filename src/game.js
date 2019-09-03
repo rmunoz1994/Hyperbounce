@@ -212,7 +212,7 @@ export default class Game {
     
     incrementMultiplier(playerPos, platform) {
         let multPos = platform.scoreMult.position.x + platform.platformGroup.position.x;
-        if (playerPos >= multPos - 0.5 && playerPos <= multPos + 0.5) {
+        if (playerPos >= multPos - 0.65 && playerPos <= multPos + 0.65) {
             this.multiplier += 1;
             return true;
         } else {
