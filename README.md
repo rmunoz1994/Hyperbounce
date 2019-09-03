@@ -9,17 +9,12 @@ In addition the player can hit randomly generated white circles on certain platf
 
 ---
 ### Functionality/MVP
- - [ ] 3D visuals and user interface
- - [ ] Player can move left and right based on mouse position
- - [ ] Platforms are automatically generated for player to jump on
- - [ ] Player scores points by colliding with platforms
- - [ ] Player loses when missing a platform
+ - 3D visuals and user interface
+ - Player can move left and right based on mouse position
+ - Platforms are automatically generated for player to jump on
+ - Player scores points by colliding with platforms
+ - Player loses when missing a platform
  
----
-### Wireframes
-
-![wireframe](https://raw.githubusercontent.com/rmunoz1994/Hyperbounce/master/src/images/hyperbounce_wireframe.png)
-
 ---
 ### Architecture and Technologies
  This project implements
@@ -37,7 +32,7 @@ In addition the player can hit randomly generated white circles on certain platf
  
 ---
 ### Highlighted Features
-####Camera Movement
+#### Camera Movement
  The game originally had a stationary camera and the player moved to the left and right sides of the screen without any movement. I wanted to implement a camera that would follow the player in a way that wasn't jarring so that the player would always be centered. This brought on many challenges about calculating screen position and translating the 2D position to the 3D space in Three.js. However, after much trial and error I figured out an elegant and simple solution.
 ```javascript
 cameraLag(spherePos) {
@@ -46,7 +41,7 @@ cameraLag(spherePos) {
     }  
 ```
 
-###Animation Loop
+#### Animation Loop
  Using the Three.js animate method. I handle player, camera, star, and platform movement,collision detection, scoring logic, and checking whether or not the game has ended.
 ```javascript
 animate() {
